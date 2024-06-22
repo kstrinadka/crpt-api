@@ -1,0 +1,34 @@
+{
+  "document_request": {
+    "signature": "some verified signature 1",
+    "document":{
+      "description": {
+        "participantInn": "098765432109"
+      },
+      "doc_id": "DOC987654321",
+      "doc_status": "PENDING",
+      "doc_type": "LP_INTRODUCE_GOODS",
+      "importRequest": false,
+      "owner_inn": "112233445566",
+      "participant_inn": "098765432109",
+      "producer_inn": "654321098765",
+      "production_date": "2024-06-01",
+      "production_type": "Imported",
+      "products": [
+        {
+          "certificate_document": "Cert456",
+          "certificate_document_date": "2024-05-20",
+          "certificate_document_number": "CERT-2024-002",
+          "owner_inn": "112233445566",
+          "producer_inn": "654321098765",
+          "production_date": "2024-05-25",
+          "tnved_code": "05060708",
+          "uit_code": "UIT654321",
+          "uitu_code": "UITU123456"
+        }
+      ],
+      "reg_date": "2024-06-01",
+      "reg_number": "REG20240601002"
+    }
+  }
+}

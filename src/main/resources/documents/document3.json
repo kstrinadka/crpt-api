@@ -1,0 +1,34 @@
+{
+  "document_request": {
+    "signature": "some verified signature 1",
+    "document":{
+      "description": {
+        "participantInn": "567890123456"
+      },
+      "doc_id": "DOC567890123",
+      "doc_status": "APPROVED",
+      "doc_type": "LP_INTRODUCE_GOODS",
+      "importRequest": true,
+      "owner_inn": "445566778899",
+      "participant_inn": "567890123456",
+      "producer_inn": "112233445566",
+      "production_date": "2024-07-20",
+      "production_type": "Domestic",
+      "products": [
+        {
+          "certificate_document": "Cert789",
+          "certificate_document_date": "2024-07-10",
+          "certificate_document_number": "CERT-2024-003",
+          "owner_inn": "445566778899",
+          "producer_inn": "112233445566",
+          "production_date": "2024-07-15",
+          "tnved_code": "09101112",
+          "uit_code": "UIT789012",
+          "uitu_code": "UITU098765"
+        }
+      ],
+      "reg_date": "2024-07-20",
+      "reg_number": "REG20240720003"
+    }
+  }
+}

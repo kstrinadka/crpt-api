@@ -1,0 +1,45 @@
+{
+  "document_request": {
+    "signature": "some-verified-signature-1",
+    "document":{
+      "description": {
+        "participantInn": "123456789012"
+      },
+      "doc_id": "DOC123456789",
+      "doc_status": "NEW",
+      "doc_type": "LP_INTRODUCE_GOODS",
+      "importRequest": true,
+      "owner_inn": "987654321098",
+      "participant_inn": "123456789012",
+      "producer_inn": "567890123456",
+      "production_date": "2024-05-15",
+      "production_type": "Domestic",
+      "products": [
+        {
+          "certificate_document": "Cert123",
+          "certificate_document_date": "2024-05-01",
+          "certificate_document_number": "CERT-2024-001",
+          "owner_inn": "987654321098",
+          "producer_inn": "567890123456",
+          "production_date": "2024-05-10",
+          "tnved_code": "01020304",
+          "uit_code": "UIT123456",
+          "uitu_code": "UITU654321"
+        },
+        {
+          "certificate_document": "MilkCertificate",
+          "certificate_document_date": "2024-05-01",
+          "certificate_document_number": "CERT-2024-001",
+          "owner_inn": "987654321098",
+          "producer_inn": "567890123456",
+          "production_date": "2024-05-10",
+          "tnved_code": "01020304",
+          "uit_code": "UIT123456",
+          "uitu_code": "UITU654321"
+        }
+      ],
+      "reg_date": "2024-05-15",
+      "reg_number": "REG20240515001"
+    }
+  }
+}

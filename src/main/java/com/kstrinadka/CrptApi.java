@@ -17,15 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * CrptApi is a Java library for interacting with the CRPT monitoring system API.
+ * It supports rate limiting and automatic error handling.
+ */
 public class CrptApi {
 
     private static final Logger log = Logger.getLogger(CrptApi.class.getName());
 
+    private final static String BASE_URL = "https://ismp.crpt.ru/api/v3/lk/documents";
     private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
     private static final int DEFAULT_REQUEST_LIMIT = 50;
     private static final int MAX_REQUESTS_TO_WAIT = 1000;   // максимальное количество ожидающих исполнения запросов к API
     private static final int HTTP_OK_STATUS = 200;
-    private final static String BASE_URL = "https://ismp.crpt.ru/api/v3/lk/documents";
+
 
     private final HttpClient client;
     private final ObjectMapper objectMapper;
@@ -39,6 +44,12 @@ public class CrptApi {
         this(DEFAULT_TIME_UNIT, DEFAULT_REQUEST_LIMIT);
     }
 
+    /**
+     * Constructs a CrptApi instance with specified time unit and request limit.
+     *
+     * @param timeUnit     the time unit for rate limiting
+     * @param requestLimit the maximum number of requests per time unit
+     */
     public CrptApi(TimeUnit timeUnit, int requestLimit) {
         client = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
@@ -47,10 +58,10 @@ public class CrptApi {
         this.lock = new ReentrantLock();
         this.condition = lock.newCondition();
 
-        initRateLimitScheduler(timeUnit);
+        initRateLimitingScheduler(timeUnit);
     }
 
-    private void initRateLimitScheduler(TimeUnit timeUnit) {
+    private void initRateLimitingScheduler(TimeUnit timeUnit) {
         scheduler.scheduleAtFixedRate(() -> {
             lock.lock();
             try {
@@ -62,7 +73,13 @@ public class CrptApi {
         }, 0, 1, timeUnit);
     }
 
-    private void rateLimitCondition() throws InterruptedException, TooManyRequestsException {
+    /**
+     * Checks and waits if the rate limit is reached.
+     *
+     * @throws InterruptedException       if interrupted while waiting
+     * @throws TooManyRequestsException if the maximum number of waiting requests is exceeded
+     */
+    private void rateLimitingCondition() throws InterruptedException, TooManyRequestsException {
         if (requestCount.get() >= MAX_REQUESTS_TO_WAIT) {
             throw new TooManyRequestsException("Maximum number of requests to wait for has been exceeded.");
         }
@@ -78,11 +95,18 @@ public class CrptApi {
         }
     }
 
+    /**
+     * Sends a request to create a document.
+     *
+     * @param documentRequest the document request to be sent
+     * @return the HTTP response from the API
+     * @throws InterruptedException       if interrupted while waiting
+     * @throws IOException                if an I/O error occurs
+     * @throws TooManyRequestsException if the maximum number of waiting requests is exceeded
+     */
     public HttpResponse<String> createDocument(DocumentRequest documentRequest)
             throws InterruptedException, IOException, TooManyRequestsException {
-
-        log.log(Level.INFO, "Entering createDocument method. Document: " + documentRequest);
-        rateLimitCondition();
+        rateLimitingCondition();
 
         HttpResponse<String> response = client.send(
                 createRequestFromDocument(documentRequest),
@@ -100,6 +124,13 @@ public class CrptApi {
         return response;
     }
 
+    /**
+     * Creates an HTTP request from the document request.
+     *
+     * @param documentRequest the document request
+     * @return the HTTP request
+     * @throws JsonProcessingException if an error occurs while processing JSON
+     */
     private HttpRequest createRequestFromDocument(DocumentRequest documentRequest) throws JsonProcessingException {
         String uriWithSignature = String.format(
                 "%s?signature=%s",
